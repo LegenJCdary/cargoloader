@@ -1,5 +1,9 @@
+def main():
+    print("cargoloader initialized")
+
+
 def cargoloader():
-    pass
+    return main()
 
 
 if __name__ == "__main__":
