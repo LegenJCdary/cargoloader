@@ -40,3 +40,28 @@ class Loggers:
 
     def flush_memory_handler(self) -> None:
         pass
+
+
+class ColourFormatter(logging.Formatter):
+
+    def __init__(self, formatter):
+        super().__init__()
+        grey = "\x1b[0;38m"
+        light_green = "\x1b[1;32m"
+        yellow = "\x1b[0;33m"
+        red = "\x1b[0;31m"
+        light_red = "\x1b[1;31m"
+        reset = "\x1b[0m"
+
+        self.FORMATS = {
+            logging.DEBUG: light_green + formatter + reset,
+            logging.INFO: grey + formatter + reset,
+            logging.WARNING: yellow + formatter + reset,
+            logging.ERROR: red + formatter + reset,
+            logging.CRITICAL: light_red + formatter + reset
+        }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
