@@ -9,7 +9,7 @@ from modules.threading.working import Workers
 from modules.verification.verify import Verify
 
 
-def main(verify_flag: bool, restart_point: Union[str, bool], exclude_list: [list, bool],
+def main(debug_flag: bool, verify_flag: bool, restart_point: Union[str, bool], exclude_list: [list, bool],
          include_list: [list, bool]) -> None:
     init_params = utils.InitParams()
     logger = Loggers()

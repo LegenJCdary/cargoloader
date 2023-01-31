@@ -15,6 +15,8 @@ class CliInput:
     def parse_arguments(self) -> Tuple:
         parser = ArgumentParser()
 
+        parser.add_argument("--debug", "-d", action="store_true", default="store_false",
+                            help="Start in debug mode.")
         parser.add_argument("--exclude", "-e", nargs="+", default=None, metavar=("DISK_SN_1",
                             "DISK_SN_2"), help="Provide list (serial numbers, space separated) of"
                             " containers to skip. Mutually exclusive with --include option.")
@@ -31,13 +33,14 @@ class CliInput:
 
         return self.validate_arguments(parser.parse_args())
 
-    def validate_arguments(self, arguments: Namespace) -> Tuple[bool, Union[str, bool], Union[list,
-                                                                bool], Union[list, bool]]:
+    def validate_arguments(self, arguments: Namespace) -> Tuple[bool, bool, Union[str, bool], Union[
+                                                                list, bool], Union[list, bool]]:
+        debug_flag = arguments.debug
         verify_flag = arguments.verification
         restart_point = self.validate_restart(arguments.restart)
         exclude_list, include_list = self.validate_inex_lists(arguments.exclude, arguments.include)
 
-        return verify_flag, restart_point, exclude_list, include_list
+        return debug_flag, verify_flag, restart_point, exclude_list, include_list
 
     def validate_restart(self, restart: Optional[str]) -> Union[str, bool]:
         try:
