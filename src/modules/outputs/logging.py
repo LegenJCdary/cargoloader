@@ -50,6 +50,9 @@ class Loggers:
                                        )
         self.logger.addHandler(handler)
 
+    def flush_memory_handler(self) -> None:
+        pass
+
 
 class ColourFormatter(logging.Formatter):
 
