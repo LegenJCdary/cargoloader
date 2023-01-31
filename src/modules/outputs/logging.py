@@ -1,9 +1,11 @@
 import logging
+from logging import handlers as loghan
 
 
 class Loggers:
 
     main_name = "cargoloader_main_logger"
+    main_fmt = "%(asctime)s [%(levelname)s]: %(message)s"
     console_fmt = "\n%(asctime)s [%(levelname)s]: %(message)s"
 
     def __init__(self):
@@ -17,4 +19,9 @@ class Loggers:
     def add_console_handler(self) -> None:
         handler = logging.StreamHandler()
         handler.setFormatter(logging.Formatter(self.console_fmt))
+        self.logger.addHandler(handler)
+
+    def add_syslog_handler(self) -> None:
+        handler = loghan.SysLogHandler()
+        handler.setFormatter(logging.Formatter(self.main_fmt))
         self.logger.addHandler(handler)
