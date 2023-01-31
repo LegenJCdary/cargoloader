@@ -1,5 +1,5 @@
-import argparse
 import modules.misc.utils as utils
+from modules.misc.arguments import CliInput
 from modules.outputs.logging import Loggers
 from modules.configs.configs import Conf
 from modules.mounting.mounting import Docked
@@ -19,13 +19,8 @@ def main():
     verify = Verify()
 
 
-def parse_arguments():
-    parser = argparse.ArgumentParser()
-    pass
-
-
 def cargoloader():
-    return main(*parse_arguments())
+    return main(*CliInput.parse_arguments(CliInput()))
 
 
 if __name__ == "__main__":
