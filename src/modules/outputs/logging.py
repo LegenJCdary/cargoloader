@@ -1,4 +1,5 @@
 import logging
+from logging import handlers as loghan
 
 
 class Loggers:
@@ -31,6 +32,11 @@ class Loggers:
         if not self.options["debug"]:
             handler.setLevel(logging.INFO)
 
+        self.logger.addHandler(handler)
+
+    def add_syslog_handler(self) -> None:
+        handler = loghan.SysLogHandler()
+        handler.setFormatter(logging.Formatter(self.main_fmt))
         self.logger.addHandler(handler)
 
 
