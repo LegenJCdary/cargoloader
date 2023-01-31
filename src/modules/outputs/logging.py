@@ -39,6 +39,11 @@ class Loggers:
         handler.setFormatter(logging.Formatter(self.main_fmt))
         self.logger.addHandler(handler)
 
+    def add_file_handler(self, log_path: str) -> None:
+        handler = logging.FileHandler(log_path)
+        handler.setFormatter(logging.Formatter(self.main_fmt))
+        self.logger.addHandler(handler)
+
 
 class ColourFormatter(logging.Formatter):
 
