@@ -1,3 +1,6 @@
+from json import loads
+
+
 class Conf:
 
     def __init__(self):
@@ -10,7 +13,7 @@ class Conf:
 
     @staticmethod
     def load_conf(conf_path: str) -> dict:
-        pass
+        return loads(conf_path)
 
     def validate_conf(self, conf: dict) -> bool:
         pass
