@@ -7,6 +7,7 @@ class Loggers:
     main_name = "cargoloader_main_logger"
     main_fmt = "%(asctime)s [%(levelname)s]: %(message)s"
     console_fmt = f"\n{main_fmt}"
+    memory_cap = 10
 
     def __init__(self, cli_options: dict):
         self.options = cli_options
@@ -42,6 +43,11 @@ class Loggers:
     def add_file_handler(self, log_path: str) -> None:
         handler = logging.FileHandler(log_path)
         handler.setFormatter(logging.Formatter(self.main_fmt))
+        self.logger.addHandler(handler)
+
+    def add_memory_handler(self) -> None:
+        handler = loghan.MemoryHandler(self.memory_cap, flushLevel=logging.DEBUG, flushOnClose=False
+                                       )
         self.logger.addHandler(handler)
 
 
