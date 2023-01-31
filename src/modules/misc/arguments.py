@@ -6,6 +6,7 @@ from typing import Tuple, Union
 class CliInput:
 
     option_names = {
+        "debug": ["--debug", "-d"],
         "exclude": ["--exclude", "-e"],
         "include": ["--include", "-i"],
         "verification": ["--no-verification", "-n"]
@@ -18,6 +19,8 @@ class CliInput:
     def create_parser(self) -> ArgumentParser:
         parser = ArgumentParser()
 
+        parser.add_argument(self.option_names["debug"][0], self.option_names["debug"][1],
+                            action="store_true", default=False, help="Start in debug mode.")
         parser.add_argument(self.option_names["exclude"][0], self.option_names["exclude"][1],
                             nargs="+", default=None, metavar=("DISK_SN_1", "DISK_SN_2"), help=
                             "Provide list (serial numbers, space separated) of containers to skip."
@@ -40,6 +43,7 @@ class CliInput:
         exclude_list, include_list = self.validate_inex_lists(arguments.exclude, arguments.include)
 
         return {
+            "debug": arguments.debug,
             "exclude": exclude_list,
             "include": include_list,
             "verification": arguments.verification
