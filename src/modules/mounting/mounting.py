@@ -9,9 +9,10 @@ class Docked:
 
     forbidden_mounts = ["/boot", "/boot/efi", "[SWAP]", "/", "/var/log", "/local"]
 
-    def __init__(self, device_path, include, exclude):
+    def __init__(self, device_path, include, exclude, config):
         self.forbidden_devices = self.get_forbidden_devices()
         self.device_path = device_path
+        self.mount_path = config["mount_path"]
         self.include_list = include
         self.exclude_list = exclude
 
@@ -64,3 +65,16 @@ class Docked:
             return disk_debug.serial
         except Exception as exc:
             raise exc
+
+    def create_mount_path(self, serial):
+        mount_dir = os.path.join(self.mount_path, serial)
+        try:
+            os.mkdir(mount_dir)
+        except Exception as exc:
+            pass
+
+    def dock_container(self):
+        pass
+
+    def return_docking_list(self):
+        pass
