@@ -32,4 +32,9 @@ class AdminConf(Conf):
 
     def __init__(self):
         super().__init__()
-        pass
+
+
+class ApplicationConf(Conf):
+
+    def __init__(self):
+        super().__init__()
