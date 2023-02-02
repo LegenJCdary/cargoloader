@@ -73,8 +73,16 @@ class Docked:
         except Exception as exc:
             pass
 
+    @staticmethod
+    def mount_device(device_path: str, mount_path: str):
+        try:
+            mount = subprocess.run(["mount", device_path, mount_path], stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        except Exception as exc:
+            raise exc
+
     def dock_container(self):
-        pass
+
 
     def return_docking_list(self):
         pass
