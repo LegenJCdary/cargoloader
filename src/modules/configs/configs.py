@@ -26,3 +26,10 @@ class OperatorConf(Conf):
 
     def __init__(self):
         pass
+
+
+class AdminConf(Conf):
+
+    def __init__(self):
+        super().__init__()
+        pass
