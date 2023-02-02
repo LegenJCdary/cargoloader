@@ -17,8 +17,11 @@ def main(debug_flag: bool, verify_flag: bool, restart_point: Union[str, bool], e
     docking_list = Docked(configuration)
     crates = ShippingList(logger, configuration, docking_list)
 
-    workers = Workers()
-    verify = Verify()
+    transferred = Workers()
+    if transferred:
+        verify = Verify()
+        if configuration.notify:
+            utils.Notify().send_notification()
 
 
 def cargoloader():
