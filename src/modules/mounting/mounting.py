@@ -9,8 +9,11 @@ class Docked:
 
     forbidden_mounts = ["/boot", "/boot/efi", "[SWAP]", "/", "/var/log", "/local"]
 
-    def __init__(self):
+    def __init__(self, device_path, include, exclude):
         self.forbidden_devices = self.get_forbidden_devices()
+        self.device_path = device_path
+        self.include_list = include
+        self.exclude_list = exclude
 
     def get_forbidden_devices(self):
         forbidden = []
@@ -29,14 +32,26 @@ class Docked:
         return forbidden
 
     def get_all_devices(self, device_path: str):
-        devices = []
+        devices = {}
         for device in os.listdir(device_path):
             if device.startswith("sd") and device not in self.forbidden_devices:
                 serial = self.pre_check_container()
                 if serial:
-                    devices.append(device)
+                    devices[serial] = device
 
         if devices:
             return devices
         else:
             raise IndexError("No devices detected")
+
+    def get_docking_list(self):
+        docking_list = {}
+        approaching = self.get_all_devices(self.device_path)
+        if self.include_list:
+            docking_list = self.include_list
+        else:
+            for serial, device in approaching.items():
+                if serial not in self.exclude_list:
+                    docking_list[serial] = device
+
+        return docking_list
