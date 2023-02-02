@@ -1,5 +1,6 @@
 from json import loads
 from jsonschema import validate
+from logging import Logger
 from typing import Union
 import os
 
@@ -66,3 +67,14 @@ class ApplicationConf(Conf):
 
     def __init__(self):
         super().__init__(global_vars.application_conf, "application")
+
+
+class MergedConf:
+
+    def __init__(self, logger: Logger, options: dict):
+        self.logger = logger
+        self.options = options
+        self.operator = OperatorConf(options["operator_conf"]).parse_conf()
+        self.project = ProjectConf(options["project_conf"]).parse_conf()
+        self.application = ApplicationConf().parse_conf()
+        self.final = self.create_final_conf()
