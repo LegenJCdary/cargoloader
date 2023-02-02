@@ -36,4 +36,11 @@ class ShippingList:
         pass
 
     def repackage_to_boxes(self):
-        pass
+        for k, v in self.docking_list:
+            v["crates"] = []
+            for file, _ in v["files"]:
+                root, name = os.path.split(file)
+                try:
+                    v["crates"][root].append(name)
+                except KeyError:
+                    v["crates"][root] = []
