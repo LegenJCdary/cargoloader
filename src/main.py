@@ -14,7 +14,7 @@ def main(debug_flag: bool, verify_flag: bool, restart_point: Union[str, bool], e
     init_params = utils.InitParams()
     logger = Loggers()
     configuration = MergedConfig(logger).config
-    docked = Docked()
+    docking_list = Docked(configuration)
     crates = ShippingList()
 
     workers = Workers()
