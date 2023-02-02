@@ -81,8 +81,19 @@ class Docked:
         except Exception as exc:
             raise exc
 
-    def dock_container(self):
+    def dock_container(self, serial: str, device: str):
+        mount = self.create_mount_path(serial)
+        self.mount_device(device, mount)
 
+        return mount
 
     def return_docking_list(self):
-        pass
+        final_version = {}
+        for k, v in self.get_docking_list():
+            mount = self.dock_container(k, v)
+            final_version[k] = {
+                "device": v,
+                "mount": mount
+            }
+
+        return final_version
