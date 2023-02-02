@@ -55,3 +55,12 @@ class Docked:
                     docking_list[serial] = device
 
         return docking_list
+
+    @staticmethod
+    def pre_check_container(device_path: str):
+        try:
+            disk_debug = subprocess.run(["smartctl", "-a", device_path], stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE)
+            return disk_debug.serial
+        except Exception as exc:
+            raise exc
