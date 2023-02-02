@@ -38,3 +38,13 @@ class ApplicationConf(Conf):
 
     def __init__(self):
         super().__init__()
+
+
+class MergedConfig(Conf):
+
+    def __init__(self, logger):
+        super().__init__()
+        self.logger = logger
+        self.operator = OperatorConf
+        self.admin = AdminConf
+        self.application = ApplicationConf
