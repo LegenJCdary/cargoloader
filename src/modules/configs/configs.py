@@ -20,3 +20,9 @@ class Conf:
 
     def complete_conf(self, conf: dict) -> dict:
         pass
+
+
+class OperatorConf(Conf):
+
+    def __init__(self):
+        pass
