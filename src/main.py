@@ -2,7 +2,7 @@ import modules.misc.utils as utils
 from typing import Union
 from modules.misc.arguments import CliInput
 from modules.outputs.logging import Loggers
-from modules.configs.configs import Conf
+from modules.configs.configs import MergedConfig
 from modules.mounting.mounting import Docked
 from modules.partitioning.listing import ShippingList
 from modules.threading.working import Workers
@@ -13,7 +13,7 @@ def main(debug_flag: bool, verify_flag: bool, restart_point: Union[str, bool], e
          include_list: [list, bool]) -> None:
     init_params = utils.InitParams()
     logger = Loggers()
-    configuration = Conf()
+    configuration = MergedConfig(logger).config
     docked = Docked()
     crates = ShippingList()
 
