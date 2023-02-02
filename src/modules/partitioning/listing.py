@@ -1,3 +1,6 @@
+import os
+
+
 class ShippingList:
 
     def __init__(self, logger, config, docking_list):
@@ -6,7 +9,15 @@ class ShippingList:
         self.docking_list = docking_list
 
     def list_container_files(self):
-        pass
+        for k, v in self.docking_list.items():
+            v["files"] = []
+            for root, subs, files in os.walk(v["mount_path"]):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    try:
+                        v["files"].append((file_path, os.stat(file_path).st_size))
+                    except Exception as exc:
+                        raise exc
 
     """
     Things to consider:
