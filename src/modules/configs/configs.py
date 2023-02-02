@@ -89,3 +89,7 @@ class MergedConfig(Conf):
 
     def check_priorities(self) -> dict:
         pass
+
+    def merge_coherent(self) -> dict:
+        pass
+
