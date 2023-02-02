@@ -54,3 +54,9 @@ class OperatorConf(Conf):
 
     def __init__(self, conf_path: Union[str, bool]):
         super().__init__(conf_path, "operator")
+
+
+class ProjectConf(Conf):
+
+    def __init__(self, conf_path: Union[str, bool]):
+        super().__init__(conf_path, "project")
