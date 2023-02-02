@@ -7,6 +7,9 @@ class ShippingList:
         self.logger = logger
         self.config = config
         self.docking_list = docking_list
+        self.list_container_files()
+        #self.calculate_box_size()
+        self.repackage_to_boxes()
 
     def list_container_files(self):
         for k, v in self.docking_list.items():
