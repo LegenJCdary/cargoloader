@@ -1,3 +1,5 @@
+import os
+
 from ..checks.healthchecks import HealthCheck
 from json import loads
 import subprocess
@@ -25,3 +27,16 @@ class Docked:
                 forbidden.append(device)
 
         return forbidden
+
+    def get_all_devices(self, device_path: str):
+        devices = []
+        for device in os.listdir(device_path):
+            if device.startswith("sd") and device not in self.forbidden_devices:
+                serial = self.pre_check_container()
+                if serial:
+                    devices.append(device)
+
+        if devices:
+            return devices
+        else:
+            raise IndexError("No devices detected")
