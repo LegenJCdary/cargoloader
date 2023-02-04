@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IntelliJ files
+.idea/
+
+# Git worktrees (not very functional on Windows)
+worktrees/
