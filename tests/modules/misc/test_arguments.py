@@ -5,6 +5,16 @@ import pytest
 from cargoloader.modules.misc.arguments import CliInput
 
 
+def create_unique_pairs(list_a: list, list_b: list, value: str) -> list:
+    pairs = []
+    for el_a in list_a:
+        for el_b in list_b:
+            pairs.append((el_a, el_b, value))
+            pairs.append((el_b, value, el_a))
+
+    return pairs
+
+
 class TestArgumentParsingVerification(CliInput):
 
     parser = CliInput().create_parser()
@@ -52,3 +62,35 @@ class TestArgumentParsingInExLists(CliInput):
 
         assert str(exc.value) == "[CRITICAL]: Mutually exclusive lists were provided, use --help."\
                                  " Program will exit now."
+
+class TestArgumentParsing(CliInput):
+
+    parser = CliInput().create_parser()
+    invalid_options = ["-en", "-ei", "-ie", "-in", "-ein", "-eni", "-ien", "-ine"]
+    example_id = "AB1234"
+
+    @pytest.mark.parametrize("option_pair", create_unique_pairs(CliInput.option_names
+                             ["verification"], CliInput.option_names["exclude"], example_id))
+    def test_exclude_options(self, option_pair):
+        arguments = self.validate_arguments(self.parser.parse_args(option_pair))
+        assert isinstance(arguments["exclude"], list)
+        assert arguments["exclude"] == [self.example_id]
+        assert arguments["include"] is False
+        assert arguments["verification"] is False
+
+    @pytest.mark.parametrize("option_pair", create_unique_pairs(CliInput.option_names
+                             ["verification"], CliInput.option_names["include"], example_id))
+    def test_include_options(self, option_pair):
+        arguments = self.validate_arguments(self.parser.parse_args(option_pair))
+        assert arguments["exclude"] is False
+        assert isinstance(arguments["include"], list)
+        assert arguments["include"] == [self.example_id]
+        assert arguments["verification"] is False
+
+    @pytest.mark.parametrize("joined", invalid_options)
+    def test_short_option_cat(self, joined: str):
+        with pytest.raises(TypeError) as exc:
+            self.validate_arguments(self.parser.parse_args([joined]))
+
+        assert str(exc.value) == "[CRITICAL]: Short options concatenation is not allowed. Program"\
+                                 " will exit now."
