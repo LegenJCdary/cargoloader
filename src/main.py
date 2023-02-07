@@ -3,6 +3,7 @@ from cargoloader.modules.misc.arguments import CliInput
 
 def main(cli_options: dict) -> None:
     print("cargoloader initialized")
+    print(f"with: {cli_options}")
 
 
 def cargoloader():
