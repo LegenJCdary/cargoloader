@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - stable
-      - development
 
 jobs:
   build:
@@ -25,4 +24,4 @@ jobs:
           pip install .
       - name: Analyse code with pylint
         run: |
-          pylint --rcfile=./tests/pylint.toml $(git ls-files '*.py')
+          pylint --rcfile=./tests/pylint_stable.toml $(git ls-files '*.py')
