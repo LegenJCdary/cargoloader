@@ -7,7 +7,8 @@ class Loggers:
     main_fmt = "%(asctime)s [%(levelname)s]: %(message)s"
     console_fmt = f"\n{main_fmt}"
 
-    def __init__(self):
+    def __init__(self, cli_options: dict):
+        self.options = cli_options
         self.logger = self.define_main_logger()
         self.configure_loggers()
 
@@ -26,6 +27,10 @@ class Loggers:
     def add_console_handler(self) -> None:
         handler = logging.StreamHandler()
         handler.setFormatter(ColourFormatter(self.console_fmt))
+
+        if not self.options["debug"]:
+            handler.setLevel(logging.INFO)
+
         self.logger.addHandler(handler)
 
 
