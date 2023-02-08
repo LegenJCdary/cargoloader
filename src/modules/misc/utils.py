@@ -9,7 +9,7 @@ class InitParams:
 
     def __init__(self):
         self.start_point = self.get_start_point()
-        self.caller_uid, self.caller_gid = self.get_caller_id()
+        self.caller_uid, self.caller_gid, self.caller_name = self.get_caller_id()
         self.hostname = self.get_hostname()
 
     @staticmethod
@@ -17,9 +17,9 @@ class InitParams:
         return datetime.now().strftime("%Y%m%d_%H%M%S")
 
     @staticmethod
-    def get_caller_id() -> Tuple[int, int]:
+    def get_caller_id() -> Tuple[int, int, str]:
         user = getpwnam(getlogin())
-        return user.pw_uid, user.pw_gid
+        return user.pw_uid, user.pw_gid, user.pw_name
 
     @staticmethod
     def get_hostname() -> str:
