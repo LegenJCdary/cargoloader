@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 import pytest
 
 from cargoloader.modules.misc.arguments import CliInput
@@ -32,8 +30,11 @@ class TestArgumentParsingInExLists(CliInput):
     single_list = ["AB1234"]
     double_list = ["AB1234", "CD1234"]
 
-    options = deepcopy(CliInput.option_names)
-    options.pop("verification")
+    options = {
+        "exclude": CliInput.option_names["exclude"],
+        "include": CliInput.option_names["include"]
+    }
+
     parser = CliInput().create_parser()
 
     # @staticmethod
