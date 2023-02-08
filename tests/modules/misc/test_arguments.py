@@ -29,12 +29,10 @@ class TestArgumentParsingInExLists(CliInput):
 
     single_list = ["AB1234"]
     double_list = ["AB1234", "CD1234"]
-
     options = {
         "exclude": CliInput.option_names["exclude"],
         "include": CliInput.option_names["include"]
     }
-
     parser = CliInput().create_parser()
 
     # @staticmethod
@@ -63,6 +61,7 @@ class TestArgumentParsingInExLists(CliInput):
 
         assert str(exc.value) == "[CRITICAL]: Mutually exclusive lists were provided, use --help."\
                                  " Program will exit now."
+
 
 class TestArgumentParsing(CliInput):
 
