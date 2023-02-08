@@ -25,7 +25,7 @@ class Loggers:
 
     def add_console_handler(self) -> None:
         handler = logging.StreamHandler()
-        handler.setFormatter(logging.Formatter(self.console_fmt))
+        handler.setFormatter(ColourFormatter(self.console_fmt))
         self.logger.addHandler(handler)
 
 
