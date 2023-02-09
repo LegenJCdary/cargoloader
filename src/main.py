@@ -7,7 +7,8 @@ def main(cli_options: dict) -> None:
     init_params = utils.InitParams()
     loggers = logging.Loggers(cli_options)
     logger = loggers.logger
-    blocks.log_starting_messages(logger, init_params, cli_options)
+    log_blocks = blocks.Blocks(logger)
+    log_blocks.log_starting_messages(init_params, cli_options)
 
 
 def cargoloader():
