@@ -78,3 +78,31 @@ class MergedConf:
         self.project = ProjectConf(options["project_conf"]).parse_conf()
         self.application = ApplicationConf().parse_conf()
         self.final = self.create_final_conf()
+
+    def nested_dict_iter(self, nested, all_keys: list, parent_key: str):
+        for key, value in nested.items():
+            if isinstance(value, abc.Mapping):
+                yield from self.nested_dict_iter(value)
+            else:
+                all_keys.append(".".join[parent_key, key])
+
+        return all_keys
+
+    @staticmethod
+    def breadcrumb(json_dict_or_list):
+        if isinstance(json_dict_or_list, dict):
+            for k, v in json_dict_or_list.items():
+                p = breadcrumb(v)
+                if p:
+                    return [k] + p
+        elif isinstance(json_dict_or_list, list):
+            lst = json_dict_or_list
+            for i in range(len(lst)):
+                p = breadcrumb(lst[i])
+                if p:
+                    return [str(i)] + p
+
+    def get_conf_keys(self) -> None:
+        self.application_keys = self.breadcrumb(self.application)
+        self.admin_keys = self.breadcrumb(self.admin)
+        self.operator_keys = self.breadcrumb(self.operator)
