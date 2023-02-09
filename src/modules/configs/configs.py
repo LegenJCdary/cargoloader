@@ -106,3 +106,13 @@ class MergedConf:
         self.application_keys = self.breadcrumb(self.application)
         self.admin_keys = self.breadcrumb(self.admin)
         self.operator_keys = self.breadcrumb(self.operator)
+
+    def check_conflicts(self) -> dict:
+        failed = 0
+        for key in self.conflicts:
+            if key in self.operator_keys:
+                if key in self.admin_keys or self.application_keys:
+                    self.logger.error()
+            else:
+                if key in self.admin_keys and self.application_keys:
+                    self.logger.error()
