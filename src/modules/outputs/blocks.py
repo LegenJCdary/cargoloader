@@ -9,16 +9,33 @@ class Blocks:
     def __init__(self, logger: Logger):
         self.logger = logger
 
-    def log_dict_elements(self, dictionary: dict) -> None:
+    def log_dict_elements(self, dictionary: dict, indent_level: int) -> None:
+        indent = "\t" * indent_level
+
         for key, val in dictionary.items():
-            val_string = " ".join(val) if isinstance(val, (list, dict)) else val
-            self.logger.debug(f"\t{key}\t\t{val_string}")
+            try:
+                if len(val) > 0:
+                    if isinstance(val, str):
+                        val_string = val
+                    else:
+                        self.logger.debug(f"{indent}{key}")
+                        if isinstance(val, dict):
+                            self.log_dict_elements(val, indent_level + 1)
+                            continue
+                        else:
+                            val_string = "; ".join(val)
+                else:
+                    val_string = "EMPTY"
+            except TypeError:
+                val_string = val
+
+            self.logger.debug(f"{indent}{key}\t\t{val_string}")
 
     def log_starting_messages(self, init_params: InitParams, cli_options: dict) -> None:
         self.logger.info(f"Welcome to cargoloader {init_params.caller_name}!")
         self.logger.info(f"Starting at {init_params.start_point} on {init_params.hostname}.")
         self.logger.debug("Command line options are:")
-        self.log_dict_elements(cli_options)
+        self.log_dict_elements(cli_options, 1)
         self.logger.info(f"Running following modes: {get_exec_modes(cli_options)}.")
 
     def log_loaded_configs(self, config: MergedConf) -> None:
