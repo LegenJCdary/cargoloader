@@ -116,3 +116,6 @@ class MergedConf:
             else:
                 if key in self.admin_keys and self.application_keys:
                     self.logger.error()
+
+    def check_priorities(self) -> dict:
+        pass
