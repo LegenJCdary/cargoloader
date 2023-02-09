@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from re import fullmatch
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 
 class CliInput:
@@ -85,3 +85,14 @@ class CliInput:
             output_list.append(serial.upper())
 
         return output_list
+
+    @staticmethod
+    def validate_conf_path(conf_path: Optional[str]) -> Union[str, bool]:
+        if conf_path:
+            try:
+                open(conf_path[0])
+                return conf_path[0]
+            except Exception as exc:
+                raise exc
+        else:
+            return False
