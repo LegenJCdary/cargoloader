@@ -122,3 +122,12 @@ class MergedConf:
 
     def merge_coherent(self) -> dict:
         pass
+
+    def create_final_conf(self) -> dict:
+        self.get_conf_keys()
+        self.check_conflicts()
+        self.check_priorities()
+        self.merge_coherent()
+
+        validated = self.validate_conf(self.interim)
+        return self.complete_conf(validated)
