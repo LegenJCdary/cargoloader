@@ -21,15 +21,33 @@ class Blocks:
                         self.logger.debug(f"{indent}{key}")
                         if isinstance(val, dict):
                             self.log_dict_elements(val, indent_level + 1)
-                            continue
                         else:
-                            val_string = "; ".join(val)
+                            self.log_list_elements(val, indent_level + 1)
+                        continue
                 else:
                     val_string = "EMPTY"
             except TypeError:
                 val_string = val
 
             self.logger.debug(f"{indent}{key}\t\t{val_string}")
+
+    def log_list_elements(self, input_list: list, indent_level: int) -> None:
+        indent = "\t" * indent_level
+        counter = 1
+
+        if isinstance(input_list[0], dict):
+            for item in input_list:
+                self.logger.debug(f"{indent}{counter}.")
+                counter += 1
+                self.log_dict_elements(item, indent_level + 1)
+        elif isinstance(input_list[0], list):
+            for item in input_list:
+                self.logger.debug(f"{indent}{counter}.")
+                counter += 1
+                self.log_list_elements(item, indent_level + 1)
+        else:
+            fmt = "{}{}".format(indent, "{}; " * len(input_list)).strip("; ")
+            self.logger.debug(fmt.format(*input_list))
 
     def log_starting_messages(self, init_params: InitParams, cli_options: dict) -> None:
         self.logger.info(f"Welcome to cargoloader {init_params.caller_name}!")
