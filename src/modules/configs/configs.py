@@ -5,6 +5,7 @@ from typing import Union
 import os
 
 from . import schemas
+from . import templates
 from ..global_vars import global_vars
 
 
@@ -124,10 +125,37 @@ class MergedConf:
         pass
 
     def create_final_conf(self) -> dict:
-        self.get_conf_keys()
-        self.check_conflicts()
-        self.check_priorities()
-        self.merge_coherent()
+        #self.get_conf_keys()
+        #self.check_conflicts()
+        #self.check_priorities()
+        #self.merge_coherent()
+        self.final = {}
 
-        validated = self.validate_conf(self.interim)
-        return self.complete_conf(validated)
+        self.merge_confs(templates.final.items())
+        completed = self.complete_conf()
+        if self.validate_conf(completed) is None:
+            return completed
+
+    def validate_conf(self, conf: dict):
+        if validate(instance=conf, schema=schemas.final) is None:
+            return conf
+
+    def complete_conf(self):
+        pass
+
+    def merge_confs(self, dictionary: dict) -> None:
+        for key, val in dictionary:
+            if isinstance(val, dict):
+                self.merge_confs(val)
+            else:
+                self.final[key] = self.check_param_priority(key, 1)
+
+    def check_param_priority(self, key: str, priority: int):
+        try:
+            value = getattr(self, templates.final[key][priority])[key]
+            return value
+        except KeyError:
+            try:
+                self.check_param_priority(key, priority + 1)
+            except KeyError:
+                value = None
