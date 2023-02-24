@@ -4,7 +4,7 @@ from logging import Logger
 from typing import Union
 import os
 
-from . import schemas
+from .schemas import schemas
 from . import templates
 from ..global_vars import global_vars
 
