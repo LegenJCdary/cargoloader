@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from re import fullmatch
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 
 class CliInput:
@@ -9,6 +9,8 @@ class CliInput:
         "debug": ["--debug", "-d"],
         "exclude": ["--exclude", "-e"],
         "include": ["--include", "-i"],
+        "operator_conf": ["--operator-conf", "-c"],
+        "project_conf": ["--project-conf", "-p"],
         "verification": ["--no-verification", "-n"]
     }
 
@@ -30,6 +32,12 @@ class CliInput:
                             "Provide list (serial numbers, space separated) of containers to"
                             " process (others will be skipped). Mutually exclusive with --exclude"
                             " option.")
+        parser.add_argument(self.option_names["operator_conf"][0], self.option_names[
+                            "operator_conf"][1], nargs=1, default=None, metavar="PATH",
+                            help="Load operator config file from provided PATH.")
+        parser.add_argument(self.option_names["project_conf"][0], self.option_names[
+                            "project_conf"][1], nargs=1, default=None, metavar="PATH",
+                            help="Load project config file from provided PATH.")
         parser.add_argument(self.option_names["verification"][0], self.option_names["verification"]
                             [1], action="store_false", default=True, dest="verification", help=
                             "Specify that you want to skip verification step.")
@@ -46,6 +54,8 @@ class CliInput:
             "debug": arguments.debug,
             "exclude": exclude_list,
             "include": include_list,
+            "operator_conf": self.validate_conf_path(arguments.operator_conf),
+            "project_conf": self.validate_conf_path(arguments.project_conf),
             "verification": arguments.verification
         }
 
@@ -75,3 +85,14 @@ class CliInput:
             output_list.append(serial.upper())
 
         return output_list
+
+    @staticmethod
+    def validate_conf_path(conf_path: Optional[str]) -> Union[str, bool]:
+        if conf_path:
+            try:
+                open(conf_path[0])
+                return conf_path[0]
+            except Exception as exc:
+                raise exc
+        else:
+            return False
